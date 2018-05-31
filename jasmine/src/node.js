@@ -11,12 +11,6 @@ function generateNewNode(){
     };
 }
 
-
-
-function setCurrentNode(node){
-    currentNode = node;
-}
-
 function getConnectingNodesHtml(){
     let connectingNodes = document.getElementById('new-node-connections');
     while(connectingNodes.firstChild){
