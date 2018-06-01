@@ -8,7 +8,7 @@
 <body>
     
 
-    <fieldset id="workspace">
+    <fieldset id="new">
         <legend>Build New Node:</legend>
         <textarea id='new-node-content'></textarea> 
         <h3>Connecting nodes:</h3>
@@ -17,6 +17,17 @@
         <button id='node-connector-editor'>Edit connecting nodes</button> 
         <button id='new-node-creator'>Add new node</button>
     </fieldset>
+
+    <fieldset id="edit">
+        <legend>Edit Selected Node:</legend>
+        <textarea id='edit-node-content'></textarea> 
+        <h3>Connecting nodes:</h3>
+        <ul id='node-connections'>
+        </ul>
+        <button id='edit-node-save'>Save Node</button>
+        <button id='edit-node-cancel'>Cancel</button>
+    </fieldset>
+
     <fieldset id="game-map">
         <legend>Game Map</legend>
     </fieldset>

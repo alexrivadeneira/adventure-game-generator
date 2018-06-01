@@ -11,6 +11,14 @@ function generateNewNode(){
     };
 }
 
+function getNodeById(nodeId){
+    for(let i = 0; i < nodes.length; i++){
+        if(nodes[i].id === nodeId){
+            return nodes[i];
+        }
+    }
+}
+
 function getConnectingNodesHtml(){
     let connectingNodes = document.getElementById('new-node-connections');
     while(connectingNodes.firstChild){
@@ -18,6 +26,15 @@ function getConnectingNodesHtml(){
     }
     return connectingNodes;
 };
+
+function getEditingConnectingNodesHtml(){
+    let connectingNodes = document.getElementById('node-connections');
+    while(connectingNodes.firstChild){
+        connectingNodes.removeChild(connectingNodes.firstChild);
+    }
+    return connectingNodes;
+};
+
 
 function renderConnectingNodes(){
     console.log('attempting render');
@@ -110,6 +127,7 @@ function drawNodes(){
     nodes.map(node => {
         let htmlNode = document.createElement('div');
         htmlNode.classList.add('node');
+        htmlNode.setAttribute('data-node-id', node.id);
 
         let nodeId = node.id;
         let htmlNodeHeader = document.createElement('h4');
@@ -122,6 +140,37 @@ function drawNodes(){
         let htmlNodeContentText = document.createTextNode(nodeContent);
         htmlNodeContent.appendChild(htmlNodeContentText);
         htmlNode.appendChild(htmlNodeContent);
+
+        let nodeConnectionsSet = node.connections;
+        let nodeConnectionsHtmlDiv = document.createElement('div');
+        nodeConnectionsSet.forEach(function(connection){
+            let htmlNodeConnection = document.createElement('div');
+            let htmlNodeConnectionText = document.createTextNode(connection.id);
+            htmlNodeConnection.appendChild(htmlNodeConnectionText);
+            nodeConnectionsHtmlDiv.appendChild(htmlNodeConnection);
+        });
+
+        let editNodeButton = document.createElement('button');
+        editNodeButton.setAttribute('data-node-id', node.id);
+        let editNodeButtonText = document.createTextNode('Edit');
+
+
+        editNodeButton.addEventListener('click', function(event){
+            let nodeId = parseInt(this.getAttribute('data-node-id'));
+            event.stopPropagation();
+            toggleViewShowEdit();
+            populateEditView(nodeId);
+            console.log(nodeId);
+            console.log('only editing');
+        })
+        editNodeButton.appendChild(editNodeButtonText);
+
+        htmlNode.appendChild(editNodeButton);
+
+        htmlNode.appendChild(nodeConnectionsHtmlDiv);
+
+
+        
         
         let nodeConnections = node.connections;
 
@@ -131,6 +180,47 @@ function drawNodes(){
     
 
     });
+}
+
+function populateEditView(nodeId){
+    let node = getNodeById(nodeId);
+
+    console.log('node:  ', node);
+    let nodeContentText = document.getElementById('edit-node-content');
+    nodeContentText.value = node.content;
+
+    let nodeConnectionsHtml = getEditingConnectingNodesHtml();
+
+    let nodeConnections = node.connections;
+    console.log(nodeConnections);
+   
+    nodeConnections.forEach(function(connection){
+        console.log('connection: ', connection);
+        let nodeConnectionLi = document.createElement('li');
+        let nodeConnectionTextId = document.createTextNode(`${connection.id}`);
+        nodeConnectionLi.appendChild(nodeConnectionTextId);
+        nodeConnectionsHtml.appendChild(nodeConnectionLi);
+
+    });
+
+    // for(let i = 0; i < nodeConnections.length; i++){
+
+    //     // console.log('logging node: ', `${getNodeById(nodeConnections[i]).id}`);  
+    // }
+}
+
+function toggleViewShowEdit(){
+    let editWorkspace = document.getElementById('edit');
+    let newWorkspace = document.getElementById('new');
+    editWorkspace.style.display = 'block';
+    newWorkspace.style.display = 'none';
+}
+
+function toggleViewShowNew(){
+    let editWorkspace = document.getElementById('edit');
+    let newWorkspace = document.getElementById('new');
+    editWorkspace.style.display = 'none';
+    newWorkspace.style.display = 'block';
 }
 
 
